@@ -1,0 +1,124 @@
+body {
+  background: #1b1b1b;
+  font-family: 'Arial', sans-serif;
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.container {
+  text-align: center;
+}
+
+.recording-box {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.outline {
+  display: none;
+}
+
+.recording .outline {
+  display: block;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  border: 8px solid #ffffff;
+  animation: pulse 3s ease-out infinite;
+  position: absolute;
+}
+
+.button {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #50cddd;
+  box-shadow: 0px 0px 20px #0084f9;
+  transition: background 0.3s, box-shadow 0.3s;
+  position: relative;
+  display: flex; /* Center icon horizontally */
+  justify-content: center; /* Center icon vertically */
+  align-items: center; /* Center icon vertically */
+}
+
+.recording .button {
+  background: #dd5050;
+  box-shadow: 0px 0px 20px #f90000;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+
+#circlein {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #6bd6e1;
+  position: absolute;
+  transition: background 0.3s;
+}
+
+.recording #circlein {
+  background: #e16b6b;
+}
+
+.mic-icon {
+  height: 60px;
+}
+
+.captions {
+  font-size: 2rem;
+  text-transform: uppercase;
+  font-weight: 400;
+  margin-top: 20px;
+}
+
+.captions span {
+  padding: 1rem;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.7);
+  border-radius: 8px;
+}
+
+.github-button {
+  margin-top: 20px;
+}
+
+.github-button button {
+  background: #333;
+  color: #ffffff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  font-size: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.github-button button i {
+  margin-right: 8px;
+}
+
+.github-button button:hover {
+  background: #444;
+}

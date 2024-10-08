@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-sandbox",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node --watch index.js"
+  },
+  "keywords": [],
+  "author": "Exil",
+  "license": "MIT",
+  "dependencies": {
+    "@deepgram/sdk": "^3.8.0",
+    "dotenv": "^16.4.5",
+    "express": "4",
+    "groq-sdk": "^0.7.0",
+    "socket.io": "^4.8.0",
+    "ws": "^8.18.0"
+  }
+}
