@@ -65,7 +65,7 @@ const setup = (ws) => {
     punctuate: true,
     smart_format: true,
     model: "nova-2-phonecall",
-    endpointing: 400
+    endpointing: 600
   });
   //when deepgram is open
   deepgram.addListener(LiveTranscriptionEvents.Open, async () => {
