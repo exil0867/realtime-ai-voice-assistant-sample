@@ -64,7 +64,7 @@ const setup = (ws) => {
     language: "en",
     punctuate: true,
     smart_format: true,
-    model: "nova-2-phonecall",
+    model: "nova-2-medical",
     endpointing: 600
   });
   //when deepgram is open
