@@ -116,7 +116,7 @@ const setup = (ws) => {
           const response = await deepgramClient.speak.request(
             { text: responseText },
             {
-              model: "aura-asteria-en",
+              model: "aura-stella-en",
               encoding: "linear16",
               container: "wav",
             }
