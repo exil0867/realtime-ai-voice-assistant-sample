@@ -1,5 +1,6 @@
 import express from 'express';
 import { Server } from 'socket.io';
+import * as PlayHT from 'playht';
 import http from 'http';
 import { getGroqChat } from './lib/groq.js'
 import { createClient, LiveTranscriptionEvents, }  from "@deepgram/sdk";
@@ -110,32 +111,61 @@ const setup = (ws) => {
           ws.close();
         }
         else {
-
+          PlayHT.init({
+            apiKey: process.env.PLAY_API_KEY,
+            userId: process.env.PLAY_USERID,
+        });
+          
           const responseText = await getGroqChat(caption, stack);
-          // log(`groq response: ${responseText}`)
-          const response = await deepgramClient.speak.request(
-            { text: responseText },
-            {
-              model: "aura-asteria-en",
-              encoding: "linear16",
-              container: "wav",
-            }
-          );
 
-          console.log(response)
-      
-          const stream = await response.getStream();
-          const headers = await response.getHeaders();
+          // const headers = await response.getHeaders();
+
+          const streamingOptions = {
+            // must use turbo for the best latency
+            voiceEngine: "PlayHT2.0-turbo",
+            //id: 'charlotte',
+            // this voice id can be one of our prebuilt voices or your own voice clone id, refer to the`listVoices()` method for a list of supported voices.
+            voiceId:
+               "s3://voice-cloning-zero-shot/d9ff78ba-d016-47f6-b0ef-dd630f59414e/female-cs/manifest.json",
+            // you can pass any value between 8000 and 48000, 24000 is default
+            sampleRate: 44100,
+            // the generated audio encoding, supports 'raw' | 'mp3' | 'wav' | 'ogg' | 'flac' | 'mulaw'
+            outputFormat: 'wav',
+            speed: 1,
+        };
+        const stream = await PlayHT.stream(responseText, streamingOptions);
           
           if (!stream) {
             throw new Error("Error generating audio stream");
           }
 
+          const streamToArrayBuffer = (stream) => {
+            return new Promise((resolve, reject) => {
+              const chunks = [];
+          
+              stream.on('data', (chunk) => {
+                chunks.push(chunk);
+              });
+          
+              stream.on('end', () => {
+                const buffer = Buffer.concat(chunks);
+                resolve(buffer.buffer.slice(buffer.byteOffset, buffer.byteOffset + buffer.byteLength));
+              });
+          
+              stream.on('error', (err) => {
+                reject(err);
+              });
+            });
+          };
+          
+          // Usage
+          const arrayBuffer = await streamToArrayBuffer(stream);
+
           if (stream) {
-            const buffer = await getAudioBuffer(stream);
+            // const buffer = await getAudioBuffer(stream);
             ws.emit('message',{
               'type': 'audio',
-              'output': Array.from(new Uint8Array(buffer)),
+              'output': arrayBuffer,
               'sid1': sid1,
               'sid2': sid2
             });
@@ -144,9 +174,6 @@ const setup = (ws) => {
             console.error("Error generating audio:", stream);
           }
         
-          if (headers) {
-            console.log("Headers:", headers);
-          }
 
 
         }
